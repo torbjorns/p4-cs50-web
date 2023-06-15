@@ -1,5 +1,28 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
-    TODO
+    <div class="container">
+        <h2>All Posts</h2>
+
+        <div id="message"></div>
+
+
+        <div id="new_post_button_field">
+            <button type="button" class="btn btn-sm btn-outline-primary" id="new_post_button">New Post</button>
+        </div>
+
+        <div id="new_post_field" class="card">
+            <form id="compose-form">
+                <textarea class="form-control" id="compose-body" placeholder="New Post"></textarea>
+                <input type="submit" value="Post" class="btn btn-primary"/>
+            </form>
+        </div>
+
+        <div id="post_list_field"></div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/posts.js' %}"></script>
 {% endblock %}

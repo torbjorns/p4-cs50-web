@@ -1,0 +1,48 @@
+.card {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+}
+
+.email-read {
+    background-color: rgb(231, 230, 230);
+}
+
+.post-time {
+    font-size: small;
+    color: #aaaaaa;
+}
+
+.email div {
+    flex-basis: 15%;
+    margin: 10px;
+}
+
+.email .subject {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.archive_button {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+#message {
+    position: absolute;
+    top: 85px; 
+    left: 60px; 
+    font-weight: bold;
+    z-index: 1; 
+    background: white; 
+    border: none; 
+  }
+
+.message_red {
+    color: red;
+}
+
+.message_green {
+    color: green;
+}
