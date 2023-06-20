@@ -2,7 +2,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -56,6 +56,22 @@ def post_to_dict(post):
         'author': post.author.username,
         'timestamp': post.timestamp, 
     }
+
+def profile(request, username):
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400)
+    
+    try:
+        user = User.objects.get(username=username)
+
+        user_data = {
+            "username": user.username
+        }
+
+        return JsonResponse(user_data);
+
+    except User.DoesNotExist:
+        raise Http404("User does not exist.")
 
 
 def login_view(request):

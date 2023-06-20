@@ -3,15 +3,11 @@
     padding: 20px;
     border: 1px solid #e6e6e6;
     border-radius: 5px;
+    background-color: #fafafa;
 }
 
 .email-read {
     background-color: rgb(231, 230, 230);
-}
-
-.post-time {
-    font-size: small;
-    color: #aaaaaa;
 }
 
 .email div {
@@ -45,4 +41,62 @@
 
 .message_green {
     color: green;
+}
+
+/* General post styles */
+.post-header,
+.post-body,
+.post-footer {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+}
+.post-header-left a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+.post-header-right .post-time {
+    color: #999;
+    font-size: 14px;
+}
+
+/* Body styles */
+.post-body {
+    margin-top: 10px;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Footer styles */
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.post-footer-left .like-button,
+.post-footer-left .unlike-button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.post-footer-left .like-button:hover,
+.post-footer-left .unlike-button:hover {
+    background-color: #0056b3;
+}
+.post-footer-right .post-likes {
+    color: #333;
+    font-size: 14px;
 }
