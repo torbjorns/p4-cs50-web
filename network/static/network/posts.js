@@ -4,19 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#new_post_button_field').style.display = 'block';
   document.querySelector('#post_list_field').style.display = 'block';
 
-  // Click on new post button to open new post field
+  // new post button
   document.querySelector('#new_post_button').addEventListener('click', function() {
     document.querySelector('#new_post_button_field').style.display = 'none';
     document.querySelector('#new_post_field').style.display = 'block';
   });
 
-  // Click on all posts button to load all posts
+  // all posts button
   document.querySelector('#all_posts_button').addEventListener('click', function() {
     console.log('All posts button clicked');
     load_post_list('all');
   });
 
-    // Click on following posts button to load following posts
+    // following posts button
     document.querySelector('#following').addEventListener('click', function() {
         console.log('Following posts button clicked');
         load_post_list('following');
