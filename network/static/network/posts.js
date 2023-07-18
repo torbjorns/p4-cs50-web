@@ -1,20 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-  document.querySelector('#new_post_field').style.display = 'none';
-  document.querySelector('#new_post_button_field').style.display = 'block';
-  document.querySelector('#post_list_field').style.display = 'block';
+    new_post_field = document.querySelector('#new_post_field')
+    new_post_button_field = document.querySelector('#new_post_button_field')
+    post_list_field = document.querySelector('#post_list_field')
+    profile_field = document.querySelector('#profile_field')
 
-  // new post button
-  document.querySelector('#new_post_button').addEventListener('click', function() {
-    document.querySelector('#new_post_button_field').style.display = 'none';
-    document.querySelector('#new_post_field').style.display = 'block';
-  });
+    new_post_field.style.display = 'none';
+    new_post_button_field.style.display = 'block';
+    post_list_field.style.display = 'block';
+    profile_field.style.display = 'none';
 
-  // all posts button
-  document.querySelector('#all_posts_button').addEventListener('click', function() {
-    console.log('All posts button clicked');
-    load_post_list('all');
-  });
+    // new post button
+    document.querySelector('#new_post_button').addEventListener('click', function() {
+        new_post_field.style.display = 'block';
+        new_post_button_field.style.display = 'none';
+        post_list_field.style.display = 'block';
+        profile_field.style.display = 'none';
+    });
+
+    // all posts button
+    document.querySelector('#all_posts_button').addEventListener('click', function() {
+        load_post_list('all');
+    });
 
     // following posts button
     document.querySelector('#following').addEventListener('click', function() {
@@ -22,40 +29,40 @@ document.addEventListener('DOMContentLoaded', function() {
         load_post_list('following');
     });
 
-  load_post_list('all');
+    load_post_list('all');
 
-  document.querySelector('#compose-form').onsubmit = function() {
-    const body = document.querySelector('#compose-body').value;
+    document.querySelector('#compose-form').onsubmit = function() {
+        const body = document.querySelector('#compose-body').value;
 
-    fetch('/compose', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          body: body
-      })
-    })
-    .then(response => response.json().then(data => ({ status: response.status, body: data })))
-    .then(data => {
-      if (data.status === 201) {
-        showMessage(data.body.message, 'message_green');
-      } else {
-          showMessage(data.body.error, 'message_red');
-      }
-    })
-    .then(() => {
-        document.querySelector('#new_post_button_field').style.display = 'block';
-        document.querySelector('#new_post_field').style.display = 'none';
-        document.querySelector('#compose-body').value = '';
-        load_post_list('all');
-    })
-    .catch(error => {
-        console.log('Error:', error);
-    });
-    
-    return false;
-  }
+        fetch('/compose', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            body: body
+        })
+        })
+        .then(response => response.json().then(data => ({ status: response.status, body: data })))
+        .then(data => {
+        if (data.status === 201) {
+            showMessage(data.body.message, 'message_green');
+        } else {
+            showMessage(data.body.error, 'message_red');
+        }
+        })
+        .then(() => {
+            document.querySelector('#new_post_button_field').style.display = 'block';
+            document.querySelector('#new_post_field').style.display = 'none';
+            document.querySelector('#compose-body').value = '';
+            load_post_list('all');
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+        
+        return false;
+    }
 });
 
 function load_profile(username) {
