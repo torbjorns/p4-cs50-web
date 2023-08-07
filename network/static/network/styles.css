@@ -1,34 +1,22 @@
 .card {
     margin-bottom: 20px;
-    padding: 20px;
+    padding: 10px;
     border: 1px solid #e6e6e6;
     border-radius: 5px;
     background-color: #fafafa;
 }
 
-.email-read {
-    background-color: rgb(231, 230, 230);
-}
-
-.email div {
-    flex-basis: 15%;
-    margin: 10px;
-}
-
-.email .subject {
-    flex-grow: 1;
-    text-align: left;
-}
-
-.archive_button {
-    margin-top: 10px;
-    margin-right: 10px;
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 #message {
     position: absolute;
-    top: 85px; 
-    left: 60px; 
+    top: 60px; 
+    right: 60px; 
     font-weight: bold;
     z-index: 1; 
     background: white; 
@@ -47,59 +35,52 @@
 .post-header,
 .post-body,
 .post-footer {
-    padding: 20px;
+    padding: 5px;
     font-family: Arial, sans-serif;
 }
 
 /* Header styles */
 .post-header {
     display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #ccc;
-}
-.post-header-left a {
-    color: #333;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-}
-.post-header-right .post-time {
-    color: #999;
-    font-size: 14px;
+    justify-content: left;
 }
 
 /* Body styles */
 .post-body {
-    margin-top: 10px;
     color: #333;
-    line-height: 1.5;
 }
 
 /* Footer styles */
 .post-footer {
     display: flex;
-    justify-content: space-between;
-    border-top: 1px solid #ccc;
-    margin-top: 10px;
-    padding-top: 10px;
+    justify-content: left;
 }
-.post-footer-left .like-button,
-.post-footer-left .unlike-button {
-    background-color: #007BFF;
+
+.button {
     color: #fff;
     border: none;
-    padding: 5px 10px;
-    margin-right: 10px;
     cursor: pointer;
 }
-.post-footer-left .like-button:hover,
-.post-footer-left .unlike-button:hover {
+
+.like-button,
+.unlike-button {
+    background-color: #007BFF;
+}
+
+.like-button:hover,
+.unlike-button:hover {
     background-color: #0056b3;
 }
-.post-footer-right .post-likes {
-    color: #333;
-    font-size: 14px;
+
+.edit-button {
+    background-color: #a87e00;
 }
+
+.post-likes,
+.post-time {
+    margin-right: 10px;
+}
+
 
 #header_box {
     display: flex;

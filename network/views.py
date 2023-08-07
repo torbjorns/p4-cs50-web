@@ -2,19 +2,19 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import JsonResponse, Http404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 
-from .models import User, Post
+from .models import User, Post, Like
 
 def index(request):
     return render(request, "network/index.html")
 
+# Create post
 @csrf_exempt
 @login_required
 def compose(request):
@@ -38,6 +38,7 @@ def compose(request):
 
     return JsonResponse({"message": "Post Created successfully."}, status=201)
 
+# Get logged in username
 def get_logged_in_username(request):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
@@ -46,7 +47,7 @@ def get_logged_in_username(request):
     else:
         return JsonResponse({"username": None})
 
-
+# Get posts
 def post_list(request, post_list):
     # Create an empty queryset
     posts = Post.objects.none()
@@ -70,7 +71,7 @@ def post_list(request, post_list):
         posts = posts.order_by("-timestamp")
         posts_dict = [post_to_dict(post) for post in posts]
 
-        paginator = Paginator(posts_dict, 2)
+        paginator = Paginator(posts_dict, 10)
         page_number = request.GET.get('page', 1)
 
         page_obj = paginator.get_page(page_number)
@@ -87,6 +88,26 @@ def post_list(request, post_list):
 
         return JsonResponse(response_data)
 
+# Edit post
+@csrf_exempt
+@login_required
+def edit_post(request, post_id):
+    if request.method == "PUT":
+        # Get post to edit
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return JsonResponse({"error": "Post does not exist."}, status=404)
+
+        # Get contents of post
+        data = json.loads(request.body)
+        body = data.get("body", "")
+
+        # Update post in database
+        post.body = body
+        post.save()
+
+        return JsonResponse({"message": "Post updated successfully."}, status=200)
 
 def post_to_dict(post):
     return {
@@ -96,6 +117,20 @@ def post_to_dict(post):
         'timestamp': post.timestamp, 
     }
 
+# get a list of all the users that have liked a post
+def users_who_liked_post(request, post_id):   
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400)
+    
+    try:
+        post = Post.objects.get(id=post_id)
+        likes = [like.user.username for like in post.likes.all()]
+        return JsonResponse(likes, safe=False);
+
+    except Post.DoesNotExist:
+        raise Http404("Post does not exist.")
+
+# load profile page
 def profile(request, username):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
@@ -117,6 +152,7 @@ def profile(request, username):
         raise Http404("User does not exist.")
 
 
+# Get a list of all followers for a user
 def followers(request, username):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
@@ -128,7 +164,8 @@ def followers(request, username):
 
     except User.DoesNotExist:
         raise Http404("User does not exist.")
-    
+
+#  Follow user
 @csrf_exempt
 @login_required
 def follow(request, username):
@@ -152,6 +189,7 @@ def follow(request, username):
         user.following.add(user_to_follow)
         return JsonResponse({"message": f"Followed {username}."}, status=200)
     
+# Like post
 @csrf_exempt
 @login_required
 def like_post(request, post_id):
@@ -168,13 +206,18 @@ def like_post(request, post_id):
     user = request.user
 
     # Check if user has already liked post
-    if user.likes.filter(id=post_id).exists():
-        user.likes.remove(post)
-        return JsonResponse({"message": f"Unliked post {post_id}."}, status=200)
+    if post.likes.filter(user=user).exists():
+        post.likes.get(user=user).delete()
+        return JsonResponse({"message": "Post unliked successfully."}, status=200)
     else:
-        user.likes.add(post)
-        return JsonResponse({"message": f"Liked post {post_id}."}, status=200)
+        like = Like(
+            user=user,
+            post=post
+        )
+        like.save()
+        return JsonResponse({"message": "Post liked successfully."}, status=200)
 
+# Login, logout, and register views
 def login_view(request):
     if request.method == "POST":
 
